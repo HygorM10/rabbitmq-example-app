@@ -3,6 +3,8 @@ package com.example.springamqp.aula1;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+
 @Component
 public class OrderCreatedListener {
 
@@ -10,6 +12,11 @@ public class OrderCreatedListener {
     public void onOrderCreated(OrderCreatedEvent event) {
         System.out.println("Id recebido " + event.getId());
         System.out.println("Valor recebido " + event.getValue());
+
+        if (event.getValue().compareTo(new BigDecimal("10000")) >= 0) {
+            throw new RuntimeException("Falha no processamento da venda de ID " + event.getId());
+        }
+
     }
 
 }
